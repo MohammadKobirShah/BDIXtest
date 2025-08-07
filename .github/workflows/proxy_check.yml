@@ -1,0 +1,51 @@
+name: Check SOCKS5 Proxies
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-proxies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install requests PySocks rich tabulate geoip2 speedtest-cli
+
+      - name: Download proxy config
+        run: |
+          curl -s https://raw.githubusercontent.com/Mushfiqtaief/ConfigXCats/refs/heads/main/Catsx.txt -o proxies.yaml
+
+      - name: Run proxy checker
+        run: |
+          python check_proxies.py
+
+      - name: Upload result as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: proxies_result
+          path: |
+            proxies_result.md
+            proxies_result.html
+
+      - name: Commit HTML & MD result
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git pull
+          git add proxies_result.md proxies_result.html
+          git commit -m "✨ Updated proxy results"
+          git push
+
+      - name: Auto-remove dead proxies & PR
+        run: |
+          python auto_pr_dead_proxies.py
