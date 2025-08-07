@@ -1,69 +1,40 @@
+# 🧪 SOCKS5 Proxy Checker with GitHub Actions
 
-# 🧪 Proxy Speedtest Automation
+This project automatically checks a list of SOCKS5 proxies every 30 minutes using **GitHub Actions** and performs the following tasks:
 
-This project automatically tests a list of SOCKS5 proxies using Playwright by visiting a custom speedtest website, capturing screenshots, and outputting results in Markdown and HTML.
+## ✅ Features
 
----
+- 🔁 Runs every 30 minutes (cron)
+- 🧪 Tests each proxy for:
+  - ✅ Liveness (connectivity)
+  - 📶 Ping (latency)
+  - 🌐 Geo IP location & ISP
+  - 🚀 Download speed (via file fetch)
+  - 🚀 Upload speed (via file upload)
+- 📄 Outputs results in:
+  - `proxies_result.md` (Markdown table)
+  - `proxies_result.html` (Stylish HTML)
+- ❌ Automatically removes dead proxies and opens a **pull request**
 
-## 📦 Features
+## 📁 Files Included
 
-- Fetches proxies from GitHub-hosted YAML (Catsx.txt)
-- Tests latency and browser performance via http://zeroftp.speedtestcustom.com/
-- Captures screenshots
-- Outputs:
-  - `proxies_result.md` (for GitHub display)
-  - `proxies_result.html` (dark mode, emojis, responsive)
-- GitHub Actions integration
-  - Auto-run every 3 hours
-  - Uploads result files as artifacts
+| File | Description |
+|------|-------------|
+| `check_proxies.py` | Main script that tests proxies and saves reports |
+| `auto_pr_dead_proxies.py` | Script that removes dead proxies and opens a PR |
+| `.github/workflows/proxy_check.yml` | GitHub Action to automate the process |
+| `proxies.yaml` | (Dynamic) Loaded SOCKS5 proxy list |
+| `alive_proxies.yaml` | (Generated) List of alive proxies |
+| `proxies_result.md` | Proxy test results in Markdown |
+| `proxies_result.html` | Proxy test results in HTML |
 
----
+## 🚀 Usage
 
-## 🛠 Setup Locally
-
-```bash
-pip install -r requirements.txt
-playwright install
-python run_speedtest.py
-```
-
-Screenshots saved in `screenshots/`. Results in `proxies_result.md` and `proxies_result.html`.
-
----
-
-## 🚀 GitHub Actions
-
-The action is defined in `.github/workflows/proxy_speedtest.yml`. It runs every 3 hours and uploads results as artifacts.
-
----
-
-## 🔗 Proxy Source
-
-We fetch live proxies from:
-
-```
-https://raw.githubusercontent.com/Mushfiqtaief/ConfigXCats/refs/heads/main/Catsx.txt
-```
+1. **Push this repo to GitHub**
+2. **Enable GitHub Actions**
+3. **Ensure `gh` CLI is authenticated** (used for PR creation)
+4. ✅ Done — Proxy tests + reports + cleanup will auto-run every 30 mins
 
 ---
 
-## 🤖 Output Preview
-
-Example Markdown and HTML views include proxy name, IP, port, status, and screenshot of test.
-
----
-
-## 📁 Folder Structure
-
-```
-proxy_speedtest/
-├── run_speedtest.py
-├── requirements.txt
-├── proxies_result.md
-├── proxies_result.html
-├── screenshots/
-├── .github/
-│   └── workflows/
-│       └── proxy_speedtest.yml
-└── README.md
-```
+Made with ❤️ by [ChatGPT Automation]

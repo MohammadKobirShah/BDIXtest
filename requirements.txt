@@ -1,4 +1,7 @@
-playwright
 requests
+PySocks
+rich
+tabulate
+geoip2
+speedtest-cli
 pyyaml
-prettytable
