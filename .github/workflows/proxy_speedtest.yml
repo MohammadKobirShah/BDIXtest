@@ -1,0 +1,23 @@
+name: Proxy Speed Test
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install -r requirements.txt
+      - run: python run_speedtest.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: proxy-results
+          path: |
+            proxies_result.md
+            proxies_result.html
+            screenshots/
